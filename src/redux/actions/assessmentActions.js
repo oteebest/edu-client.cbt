@@ -33,12 +33,3 @@ export const LoadAssessment = () => async (dispatch) => {
     assessments: response.data.data,
   });
 };
-
-export const FilterAssessment = function (searchText) {
-  return async function (dispatch) {
-    dispatch({
-      type: types.FILTER_ASSESSMENT_SUCCESS,
-      searchText: searchText,
-    });
-  };
-};

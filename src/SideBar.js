@@ -52,6 +52,19 @@ class SiderBar extends React.Component {
                     <i className="fa fa-fw fas fa-users"></i>Assessments
                   </Link>
                 </li>
+                <li className="nav-item ">
+                  <Link
+                    to="/questions"
+                    className="nav-link"
+                    href="#"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    data-target="#submenu-1"
+                    aria-controls="submenu-1"
+                  >
+                    <i className="fa fa-fw fas fa-users"></i>Questions
+                  </Link>
+                </li>
 
                 <li className="nav-item ">
                   <Link

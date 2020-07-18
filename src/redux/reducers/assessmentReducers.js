@@ -15,8 +15,6 @@ export default function assessmentReducer(
       return DeleteAssessment(state, action.id);
     case types.LOAD_ASSESSMENT_SUCCESS:
       return { ..._.mapKeys(action.assessments, "id") };
-    case types.FILTER_ASSESSMENT_SUCCESS:
-      return FilterAssessment(state, action.searchText);
     default:
       return state;
   }
@@ -29,17 +27,5 @@ export default function assessmentReducer(
     const managedAssessment = { [asssessment.id]: asssessment };
 
     return { ...assessments, ...managedAssessment };
-  }
-
-  function FilterAssessment(assessments, searchText) {
-    var objectValues = Object.values(assessments);
-
-    var filteredAssessments = objectValues.filter((u) =>
-      u.name.includes(searchText)
-    );
-
-    console.log(filteredAssessments);
-
-    return { ..._.mapKeys(filteredAssessments, "id") };
   }
 }

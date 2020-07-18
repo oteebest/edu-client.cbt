@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PageHeader from "../../PageHeader";
 import SecureLayout from "../../SecureLayout";
 import {
   LoadAssessment,
   DeleteAssessment,
   ManageAssessment,
-  FilterAssessment,
 } from "../../redux/actions/assessmentActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import FormModal from "../common/FormModal";
 import { Form } from "react-bootstrap";
+import Table from "../common/Table";
+import { FormatDate } from "../../util";
 
 const Assessments = ({
   LoadAssessment,
   DeleteAssessment,
   ManageAssessment,
   assessments,
-  FilterAssessment,
   ...props
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [headerText, setModalHeaderText] = useState("");
   const [validated, setValidated] = useState(false);
   const [assessment, setAssessment] = useState({ ...props.assessment });
+
+
 
   useEffect(() => {
     function Load() {
@@ -35,9 +37,16 @@ const Assessments = ({
 
   useEffect(() => {});
 
-  function handleOpen() {
+  function handleOpen(e) {
+    e.preventDefault();
     setShowModal(true);
     setModalHeaderText("New Assessment");
+    setAssessment({
+      id: null,
+      name: "",
+      instructions: "",
+      duration: null,
+    });
   }
 
   function handleOpenUpdate(id) {
@@ -79,79 +88,52 @@ const Assessments = ({
     DeleteAssessment(id);
   }
 
-  function handleAssessmentFilter(event) {
-    const searchText = event.currentTarget.value;
-    if (searchText.length > 1) {
-    }
-  }
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Name",
+        accessor: "name",
+      },
+      {
+        Header: "Duration",
+        accessor: "duration",
+      },
+      {
+        Header: "Created",
+        accessor: "createdOn",
+      },
+    ],
+    []
+  );
 
-  function renderAssessmentList(assessment, searchText) {
-    const assessmentList = Object.values(assessments);
+  function renderAssessmentList(columns, assessments) {
+    const assessmentCopy = Object.values(assessments);
 
-    return assessmentList.map((u, index) => {
-      return (
-        <tr key={u.id}>
-          <td>{u.name}</td>
-          <td>{u.duration}</td>
-          <td>{u.createdOn}</td>
-          <td>
-            <button
-              onClick={() => handleOpenUpdate(u.id)}
-              className="btn btn-primary btn-xs"
-            >
-              Edit
-            </button>
-          </td>
-          <td>
-            <button
-              onClick={() => handleDelete(u.id)}
-              className="btn btn-danger btn-xs"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      );
-    });
+    const data = assessmentCopy.map((u) => ({
+      ...u,
+      ...{ createdOn: FormatDate(u.createdOn) },
+    }));
+
+    //   const data = assessments;
+    return (
+      <>
+        <Table
+          columns={columns}
+          data={data}
+          handleOpenUpdate={handleOpenUpdate}
+          handleDelete={handleDelete}
+          handleOpen={handleOpen}
+          createButtonText="Create Asssessment"
+        />
+      </>
+    );
   }
 
   function renderAssesments() {
     return (
       <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <div className="card">
-            <div className="card-header">
-              <input
-                type="text"
-                onChange={handleAssessmentFilter}
-                className="float-left"
-              ></input>
-
-              <button
-                className="btn btn-primary btn-sm float-right"
-                id="btnCreate"
-                onClick={handleOpen}
-              >
-                Create Contact
-              </button>
-            </div>
-            <div className="card-body">
-              <div className="table-responsive">
-                <table className="table table-striped table-bordered first">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Duration</th>
-                      <th>Created</th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>{renderAssessmentList(assessments, "")}</tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          {renderAssessmentList(columns, assessments)}
         </div>
       </div>
     );
@@ -225,14 +207,12 @@ Assessments.propTypes = {
   LoadAssessment: PropTypes.func.isRequired,
   DeleteAssessment: PropTypes.func.isRequired,
   ManageAssessment: PropTypes.func.isRequired,
-  FilterAssessment: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
   LoadAssessment,
   ManageAssessment,
   DeleteAssessment,
-  FilterAssessment,
 };
 
 const mapStateToProps = (state) => {

@@ -5,14 +5,16 @@ import Login from "./components/account/Login";
 import SignInOidc from "./components/account/SignInOidc";
 import Dashboard from "./components/dashboard/Dashboard";
 import Assessments from "./components/assessment/Assessments";
-import Assessments2 from "./components/assessment/Assessments2";
-import QuestionList from "./components/question/QuestionList";
+import Questions from "./components/question/Questions";
 import { IdentityManager } from "./util/identity";
 import NotFound from "./components/common/NotFound";
 import * as Constants from "./util/constants";
+import Test from "./components/question/Test";
 
 function App(props) {
   const [userLoginStatus, setLoginStatus] = useState({ status: "unknown" });
+
+  console.log("App");
 
   async function GetUser() {
     const user = await IdentityManager.getUser();
@@ -50,7 +52,8 @@ function App(props) {
           <Route path="/" exact component={Dashboard} />
           <Route path="/dashboard" exact component={Dashboard} />
           <Route path="/assessments" exact component={Assessments} />
-          <Route path="/question" exact component={QuestionList} />
+          <Route path="/questions" exact component={Questions} />
+          <Route path="/test" exact component={Test} />
 
           <Route component={NotFound} />
         </Switch>
