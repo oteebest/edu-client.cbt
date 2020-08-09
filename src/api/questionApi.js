@@ -1,8 +1,13 @@
 import cbtApi from "./index";
 
-export async function LoadQuestions(pageSize, pageNumber) {
+export async function LoadQuestions(
+  subjectId,
+  difficultyLevelId,
+  pageSize,
+  pageNumber
+) {
   return cbtApi.get(
-    `api/v1/question?pageSize=${pageSize}&pageNumber=${pageNumber}`
+    `api/v1/question?subjectId=${subjectId}&difficultyLevelId=${difficultyLevelId}&pageSize=${pageSize}&pageNumber=${pageNumber}`
   );
 }
 

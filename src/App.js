@@ -9,7 +9,6 @@ import Questions from "./components/question/Questions";
 import { IdentityManager } from "./util/identity";
 import NotFound from "./components/common/NotFound";
 import * as Constants from "./util/constants";
-import Test from "./components/question/Test";
 
 function App(props) {
   const [userLoginStatus, setLoginStatus] = useState({ status: "unknown" });
@@ -53,7 +52,6 @@ function App(props) {
           <Route path="/dashboard" exact component={Dashboard} />
           <Route path="/assessments" exact component={Assessments} />
           <Route path="/questions" exact component={Questions} />
-          <Route path="/test" exact component={Test} />
 
           <Route component={NotFound} />
         </Switch>

@@ -8,8 +8,18 @@ export const DeleteQuestion = (id) => async (dispatch) => {
   dispatch({ type: types.DELETE_QUESTION_SUCCESS, id });
 };
 
-export const LoadQuestions = (pageSize, pageNumber) => async (dispatch) => {
-  const response = await questionApi.LoadQuestions(pageSize, pageNumber);
+export const LoadQuestions = (
+  subjectId,
+  difficultyLevelId,
+  pageSize,
+  pageNumber
+) => async (dispatch) => {
+  const response = await questionApi.LoadQuestions(
+    subjectId,
+    difficultyLevelId,
+    pageSize,
+    pageNumber
+  );
 
   dispatch({
     type: types.LOAD_QUESTION_SUCCESS,
